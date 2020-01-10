@@ -23,9 +23,6 @@ export default class BoardStore {
   }
 
   @action setSettings = (rows, cols, mines) => {
-    console.log("setSettings rows : ", rows)
-    console.log("setSettings cols : ", cols)
-    console.log("setSettings mines : ", mines)
     this.mines = mines
     this.rows = rows
     this.cols = cols
