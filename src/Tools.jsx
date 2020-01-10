@@ -1,19 +1,21 @@
 import React, {Component} from 'react'
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 @inject(stores => ({
   setSettings: stores.board.setSettings,
-  flags: stores.board.flags
+  rows: stores.board.rows,
+  cols: stores.board.cols,
+  flags: stores.board.flags,
+  mines: stores.board.mines
 }))
 class Tools extends Component{
   constructor(props) {
     super(props)
-    const {mines, cols, rows, flags} = this.props
+    const {mines, cols, rows } = this.props
     this.state = {
-      rows,
-      cols,
       mines,
-      flags
+      cols, 
+      rows
     }
     this.handleInput = this.handleInput.bind(this)
     this.onClickSetTable = this.onClickSetTable.bind(this)
@@ -26,8 +28,8 @@ class Tools extends Component{
     setSettings(rows,cols,mines)
   }
   render() {
-    const {mines, cols, rows} = this.state
     const {flags} = this.props
+    const { mines, cols, rows} = this.state
     return (
       <div className="tool-wrapper">
         <p>폭탄 수 : {mines}</p>
@@ -44,7 +46,7 @@ class Tools extends Component{
           <span>열 : </span>
           <input name="cols" type="number" value={cols} onChange={this.handleInput}></input>
         </div>
-        <button onClick={() => this.onClickSetTable(rows, cols, mines) }> Start </button>
+        <button onClick={() => this.onClickSetTable(rows, cols, mines)}> Start </button>
       </div>
     )
   }

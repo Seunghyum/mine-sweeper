@@ -10,8 +10,7 @@ import { inject  } from 'mobx-react';
 class Board extends Component {
   constructor(props) {
     super(props)
-
-    this.setHasMine = this.setHasMine.bind(this)
+    
     this.setAroundMineCount = this.setAroundMineCount.bind(this)
 
     this.setRandomArray = this.setRandomArray.bind(this)
@@ -81,11 +80,6 @@ class Board extends Component {
     })
     return cellIdMap
   }
-
-  setHasMine(value) {
-    if(value === true) return true
-    else return false
-  }
   
   setAroundMineCount(value) {
     if(typeof(value) === 'number') return value
@@ -100,10 +94,11 @@ class Board extends Component {
         const value = cellIdTable.get(id)
         elements.push(
           <Cell id={id} 
-                hasMine={this.setHasMine(value)} 
+                hasMine={value} 
                 aroundMineCount={this.setAroundMineCount(value)} 
                 key={id + Math.random()} 
-          />)
+          />
+        )
       }
       elements.push(<div className="clear" key={i}></div>)
     }
