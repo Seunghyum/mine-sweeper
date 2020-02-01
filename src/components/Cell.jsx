@@ -14,6 +14,8 @@ class Cell extends Component {
       hasMine: hasMine,
       isOpened: false,
       isFlagged: false,
+      isClicked: false,
+      mineCount: 0
     }
 
     this.handleClick = this.handleClick.bind(this)
@@ -44,7 +46,8 @@ class Cell extends Component {
   render() {
     return (
       <div 
-        className="cell" 
+        id={this.state.id}
+        className={`cell ${this.state.hasMine ? 'bomb' : ""}`}
         onClick={(e) => this.handleClick(e)}
         onContextMenu={(e) => this.handleClick(e)}
       >

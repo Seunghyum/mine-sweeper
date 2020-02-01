@@ -11,3 +11,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.mine-sweeper-table {
+  line-height: 0px;
+}
+.cell {
+  float: left;
+  line-height: 40px;
+  text-align: center;
+  width: 31px;
+  height: 40px;
+  border: 1px solid silver;
+  &.bomb {
+    background-image: url('../images/bomb.png');
+    background-position: center;
+    background-size: cover;
+  }
+}
+.clear { 
+  clear: left;
+}
+.tool-wrapper {
+  margin-bottom:30px;
+}

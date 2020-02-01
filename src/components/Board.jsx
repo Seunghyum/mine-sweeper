@@ -10,38 +10,29 @@ import { inject  } from 'mobx-react';
 class Board extends Component {
   constructor(props) {
     super(props)
-    
-    this.setAroundMineCount = this.setAroundMineCount.bind(this)
-
-    this.setRandomArray = this.setRandomArray.bind(this)
-    this.setMines = this.setMines.bind(this)
-    this.setCellIdTable = this.setCellIdTable.bind(this)
     this.setBoard = this.setBoard.bind(this)
+
+    this.setAroundMineCount = this.setAroundMineCount.bind(this)
+    this.setIsMine = this.setIsMine.bind(this)
   }
 
-  componentDidMount() {
-    this.setBoard()
-  }
-
-  setRandomArray(min, max){
-    const rowIndex = Math.floor(Math.random()*(max-min+1)) + min
-    const colIndex = Math.floor(Math.random()*(max-min+1)) + min
-    return [rowIndex, colIndex]
-  }
-  
-  setMines(rows=8, cols=8, mines=8){
-    if(rows * cols <= mines) return alert("Number of mines exceed total cells")
-  
-    let mineSet = new Set()
+  setMines(rows=8, cols=8, mines=8) {
+    if(rows * cols < mines) return alert("Number of mines exceed total cells")
+    let numSet = new Set()
     let mineArray = []
-    
     for(let i=0;i<mines;i++) {
       while(true) {
-        const newMine = this.setRandomArray(1, cols)
-        const newMineString = JSON.stringify(newMine)
-        if(mineSet.has(newMineString)) continue
-        mineSet.add(newMineString)
-        mineArray.push(newMine)
+        const min = 1
+        const max = rows * cols
+        const randomNum = Math.floor( Math.random()*(max-min+1)) + min
+        if(numSet.has(randomNum)) continue
+        numSet.add(randomNum)
+        const rowTmp = randomNum % rows
+        const rowIndex = rowTmp === 0 ? rows : rowTmp
+        const colTmp = Math.floor(randomNum/cols)
+        const colIndex = colTmp === 0 ? cols : colTmp
+        const newMineIndex = [rowIndex-1, colIndex-1]
+        mineArray.push(newMineIndex)
         break
       }
     }
@@ -49,9 +40,9 @@ class Board extends Component {
   }
 
   setCellIdTable(rows, cols, mines) {
-    const minesArray = this.setMines(rows,cols,mines)
+    const mineArray = this.setMines(rows,cols,mines)
     let cellIdMap = new Map() 
-    minesArray.forEach((mine) => {
+    mineArray.forEach(mine => {
       const origin = JSON.stringify(mine)
       cellIdMap.set(origin, true)
 
@@ -73,9 +64,14 @@ class Board extends Component {
         downRight,
         downleft,
       ]
+      // console.log(`======${origin}======`)
       aroundMine.forEach(am => {
-        if(typeof(cellIdMap.get(am)) === 'number') cellIdMap.set(am, cellIdMap.get(am) + 1)
-        else if(cellIdMap.get(am) === undefined) cellIdMap.set(am, 1)
+        const val = cellIdMap.get(am)
+        if(am[0] < 0 || am[1] < 0) return false
+        else if(typeof(val) === 'boolean') return false
+        else if(typeof(val) === 'number') cellIdMap.set(am, val + 1)
+        else if(val === undefined) cellIdMap.set(am, 1)
+        // console.log(`${am} : ${val}`)
       })
     })
     return cellIdMap
@@ -85,22 +81,27 @@ class Board extends Component {
     if(typeof(value) === 'number') return value
   }
 
+  setIsMine(value) {
+    return value === true ? true : false
+  }
+
   setBoard(rows, cols, mines) {
     const cellIdTable = this.setCellIdTable(rows, cols, mines)
+    console.log('cellIdTable : ', cellIdTable)
     let elements = []
     for(let i=0;i<rows;i++) {
       for(let j=0;j<cols;j++) {
-        const id = `[${j},${i}]`
+        const id = `[${i},${j}]`
         const value = cellIdTable.get(id)
         elements.push(
           <Cell id={id} 
-                hasMine={value} 
+                hasMine={this.setIsMine(value)} 
                 aroundMineCount={this.setAroundMineCount(value)} 
                 key={id + Math.random()} 
           />
         )
       }
-      elements.push(<div className="clear" key={i}></div>)
+      elements.push(<div className="clear" key={i + Math.random()}></div>)
     }
     return elements
   }

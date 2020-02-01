@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import './App.css';
-import Board from './Board'
-import Tools from './Tools'
+import Board from './components/Board'
+import Tools from './components/Tools'
 import { inject } from 'mobx-react';
 
 @inject(stores => ({
