@@ -1,17 +1,20 @@
-const path = require("path");
+const { resolve } = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: resolve(__dirname, "../src/index.js"),
   output: {
     filename: "[name].bundle.js",
-    path: path.resolve(__dirname, "build")
+    path: resolve(__dirname, "../dist")
   },
   resolve: {
-    modules: [path.join(__dirname, "src"), "node_modules"],
-    extensions: ["*", ".js", ".jsx"]
+    modules: ["node_modules", "modules"],
+    extensions: ["*", ".js", ".jsx"],
+    alias: {
+      "@": resolve(__dirname, "../src")
+    }
   },
   module: {
     rules: [
@@ -45,7 +48,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: "./public/index.html"
+      template: resolve(__dirname, "../public/index.html"),
+      favicon: resolve(__dirname, "../public/favicon.ico")
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
