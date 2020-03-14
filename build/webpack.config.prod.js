@@ -1,9 +1,9 @@
-const merge = require("webpack-merge");
-const baseConfig = require("./webpack.config.base");
+const merge = require('webpack-merge')
+const baseConfig = require('./webpack.config.base')
 
 module.exports = merge(baseConfig, {
-  mode: "production",
+  mode: 'production',
   output: {
-    publicPath: "/dist/"
-  }
-});
+    publicPath: '/dist/',
+  },
+})

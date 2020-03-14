@@ -1,20 +1,20 @@
-const { resolve } = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { resolve } = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
-  entry: resolve(__dirname, "../src/index.js"),
+  entry: resolve(__dirname, '../src/index.js'),
   output: {
-    filename: "[name].bundle.js",
-    path: resolve(__dirname, "../dist")
+    filename: '[name].bundle.js',
+    path: resolve(__dirname, '../dist'),
   },
   resolve: {
-    modules: ["node_modules", "modules"],
-    extensions: ["*", ".js", ".jsx"],
+    modules: ['node_modules', 'modules'],
+    extensions: ['*', '.js', '.jsx'],
     alias: {
-      "@": resolve(__dirname, "../src")
-    }
+      '@src': resolve(__dirname, '../src'),
+    },
   },
   module: {
     rules: [
@@ -22,8 +22,8 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -32,28 +32,28 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
             options: {
               hmr: true,
-              reloadAll: true
-            }
+              reloadAll: true,
+            },
           },
-          "css-loader",
-          "sass-loader"
-        ]
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.(png|jpg|svg|gif)/,
-        use: ["file-loader"]
-      }
-    ]
+        use: ['file-loader'],
+      },
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: resolve(__dirname, "../public/index.html"),
-      favicon: resolve(__dirname, "../public/favicon.ico")
+      template: resolve(__dirname, '../public/index.html'),
+      favicon: resolve(__dirname, '../public/favicon.ico'),
     }),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"
-    })
-  ]
-};
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+    }),
+  ],
+}
