@@ -12,7 +12,7 @@
 2. make **dev.env**, **prod.env** file
 3. type **BASE_URL**, **API_PROT** like
 
-```
+```Shell
 BASE_URL="localhost"
 API_PORT="3000"
 ```

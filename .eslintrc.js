@@ -1,5 +1,3 @@
-const { resolve } = require('path')
-
 module.exports = {
   env: {
     es6: true,
@@ -15,6 +13,7 @@ module.exports = {
     'prettier',
     'plugin:cypress/recommended',
   ],
+  plugins: ['react-hooks', 'simple-import-sort'],
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
@@ -27,5 +26,15 @@ module.exports = {
     'no-eval': 'error',
     'import/first': 'off',
     'import/no-unresolved': 'off', // for wepback resolver alias
+    'react-hooks/rules-of-hooks': 'error',
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: '*', next: 'return' },
+    ],
+    'max-depth': ['error', { max: 3 }],
+    'no-unneeded-ternary': ['error', { defaultAssignment: false }],
+    'simple-import-sort/sort': 'error',
+    'sort-imports': 'off',
+    'import/order': 'off',
   },
 }
