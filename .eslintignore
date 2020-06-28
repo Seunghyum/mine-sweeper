@@ -1,0 +1,7 @@
+webpack.config.**.js
+node_modules/
+public/
+bin/
+build/
+package.json
+package-lock.json

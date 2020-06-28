@@ -1,4 +1,4 @@
-import App from '@src/App'
+import App from '@src/App.tsx'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
