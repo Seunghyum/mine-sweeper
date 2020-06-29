@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
-  entry: resolve(__dirname, '../src/index.js'),
+  entry: resolve(__dirname, '../src/index.tsx'),
   output: {
     filename: '[name].bundle.js',
     path: resolve(__dirname, '../dist'),
@@ -13,7 +13,11 @@ module.exports = {
     modules: ['node_modules', 'modules'],
     extensions: ['*', '.ts', '.tsx', '.js'],
     alias: {
-      '@src': resolve(__dirname, '../src'),
+      '~src': resolve(__dirname, '../src'),
+      '~utils': resolve(__dirname, '../src/utils'),
+      '~types': resolve(__dirname, '../src/@types'),
+      '~stores': resolve(__dirname, '../src/stores'),
+      '~helpers': resolve(__dirname, '../src/helpers'),
     },
   },
   module: {

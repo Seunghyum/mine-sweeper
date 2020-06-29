@@ -1,10 +1,28 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
+    "moduleResolution": "Node",
     "noImplicitAny": true,
+    "sourceMap": true,
     "module": "es6",
     "jsx": "react",
+    "target": "ES6",
     "allowJs": true,
-    "experimentalDecorators": true
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "~src":  ["src/*"],
+      "~utils": ["src/utils/*"],
+      "~stores": ["src/stores/*"],
+      "~helpers": ["src/helpers/*"],
+      "~types": ["src/@types/*"] 
+    },
+    "typeRoots": [
+      "./src/@types",
+      "./node_modules/@types",
+    ]
   },
 }

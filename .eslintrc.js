@@ -7,12 +7,13 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   extends: [
     'prettier',
-    'airbnb',
-    'airbnb/hooks',
     'prettier/react',
     'plugin:@typescript-eslint/recommended',
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
   ],
   plugins: ['@typescript-eslint', 'react-hooks', 'simple-import-sort'],
   rules: {
@@ -30,5 +31,7 @@ module.exports = {
     'max-depth': ['error', { max: 3 }],
     'no-unneeded-ternary': ['error', { defaultAssignment: false }],
     'simple-import-sort/sort': 'error',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
 }
