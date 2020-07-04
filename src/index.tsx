@@ -4,12 +4,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import App from '~src/App'
+import RootStore from '~stores'
 
 import { StoreProvider } from './helpers/useProvider'
-import BoardStore from './stores/board'
 
 ReactDOM.render(
-  <StoreProvider value={new BoardStore()}>
+  // <StoreProvider BoardStore={new BoardStore()} NodeStore={new NodeStore()}>
+  <StoreProvider value={new RootStore()}>
     <App />
   </StoreProvider>,
   document.getElementById('app'),

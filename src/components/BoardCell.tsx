@@ -3,16 +3,16 @@ import { useEffect, useState } from 'react'
 
 import { useStores } from '~helpers/useStores'
 interface Props {
-  id: number[]
+  id: string
   hasMine: boolean
   aroundMineCount: number | void
   increaseFlags?: () => void
   decreaseFlags?: () => void
 }
 
-function Cell(props: Props): React.ReactElement<Props> {
+function BoardCell(props: Props): React.ReactElement<Props> {
   const { id, hasMine, aroundMineCount } = props
-  const { increaseFlags, decreaseFlags } = useStores()
+  const { increaseFlags, decreaseFlags } = useStores().boardStore
 
   const [isOpened, setIsOpened] = useState(false)
   const [isFlagged, setIsFlagged] = useState(false)
@@ -26,6 +26,7 @@ function Cell(props: Props): React.ReactElement<Props> {
   }
 
   const handleClick = (e: any) => {
+    if (isOpened) return false
     e.preventDefault()
     if (e.type === 'click') {
       console.log('=====!!!')
@@ -52,13 +53,14 @@ function Cell(props: Props): React.ReactElement<Props> {
 
   return (
     <div
-      id={String(id)}
+      id={id}
       className={`cell ${hasMine ? 'bomb' : ''}`}
       onClick={e => handleClick(e)}
       onContextMenu={e => handleClick(e)}
     >
-      {isFlagged ? <i className="fas fa-flag" /> : mineCount}
+      {isFlagged && <i className="fas fa-flag" />}
+      {isOpened ? mineCount : undefined}
     </div>
   )
 }
-export default Cell
+export default BoardCell

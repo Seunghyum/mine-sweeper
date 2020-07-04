@@ -4,23 +4,20 @@ import { useState } from 'react'
 
 import { useStores } from '~helpers/useStores'
 
-import { BoardConfig } from '../@types/index'
-
-function Tools(props: BoardConfig): React.ReactElement<BoardConfig> {
-  const { mines, cols, rows, flags, setSettings } = useStores()
+function Tools(): React.ReactElement {
+  const { cols, rows, flags, setSettings, mines } = useStores().boardStore
   const [inputRows, setInputRows] = useState(rows)
   const [inputCols, setInputCols] = useState(cols)
-  const [inputMines, setInputMines] = useState(mines)
 
   const onClickSetTable = () => {
-    setSettings(inputRows, inputCols, inputMines)
+    setSettings(inputRows, inputCols)
   }
 
   return (
     <div className="tool-wrapper">
       <p>폭탄 수 : {mines}</p>
       <p>깃발 수 : {flags}</p>
-      <div>
+      {/* <div>
         <span>폭탄 수 조정 : </span>
         <input
           name="mines"
@@ -28,7 +25,7 @@ function Tools(props: BoardConfig): React.ReactElement<BoardConfig> {
           value={inputMines}
           onChange={e => setInputMines(Number(e.target.value))}
         />
-      </div>
+      </div> */}
       <div>
         <span>줄 : </span>
         <input

@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import boardStore from '~stores/board'
+import { RootStoreType } from '~stores'
 
-export const StoreContext = createContext<boardStore>({} as boardStore)
+export const StoreContext = createContext<RootStoreType>({} as RootStoreType)
 export const StoreProvider = StoreContext.Provider
