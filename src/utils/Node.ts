@@ -8,7 +8,6 @@ export interface NodeType {
   top: NodeType | null
   bottom: NodeType | null
   incrementAdjacent: () => void
-  // updateZeroAdjacentNodeToOpen: () => void
   setTopNode: (node: NodeType) => void
   setBottomNode: (node: NodeType) => void
   setLeftNode: (node: NodeType) => void

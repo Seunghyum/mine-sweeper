@@ -1,3 +1,5 @@
+$cell-size: 40px;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -15,22 +17,47 @@ code {
 .mine-sweeper-table {
   line-height: 0px;
 }
-.cell {
+.board-wrapper {
+  width: fit-content;
+  margin: auto;
+}
+.cell-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+
+.cell-wrapper .cell {
+  width: $cell-size;
+  height: $cell-size;
   float: left;
+  line-height: $cell-size;
   text-align: center;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
-  border: 1px solid silver;
+  border: 0.3px solid silver;
+  background-color: white;
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(0,0,0,0.1);
+    opacity: 0.9;
+  }
   &.bomb {
-    background-image: url('../images/bomb.png');
-    background-position: center;
-    background-size: cover;
+    background-image: url('https://img.icons8.com/emoji/48/000000/bomb-emoji.png');
+    background-color: rgba(255, 0, 0, 0.15) !important;
+  }
+  &.opened {
+    background-color: rgba(0, 128, 0, 0.15);
+    float: left;
+  }
+  &.flaged {
+    background-image: url('https://img.icons8.com/office/40/000000/filled-flag.png');
   }
 }
 .clear { 
   clear: left;
 }
 .tool-wrapper {
+  text-align: center;
   margin-bottom:30px;
 }

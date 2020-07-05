@@ -5,10 +5,11 @@ export interface BoardStoreType {
   cols?: number
   mines?: number
   flags?: number
+  getFlags?: number
   rootStore?: any
   increaseFlags?: () => void
   decreaseFlags?: () => void
-  setSettings?: (rows: number, cols: number) => void
+  setSettings?: (rows: number, cols: number) => { rows: number; cols: number; mines: number }
 }
 
 export default class BoardStore {
@@ -21,8 +22,12 @@ export default class BoardStore {
     this.initSettings()
   }
 
-  @computed get mines() {
-    return Math.floor((this.rows * this.cols) / 3)
+  @computed get mines(): number {
+    return Math.floor((this.rows * this.cols) / 4)
+  }
+
+  @computed get getFlags(): number {
+    return this.flags - 2
   }
 
   @action
@@ -36,9 +41,15 @@ export default class BoardStore {
   }
 
   @action
-  setSettings = (rows: number, cols: number): void => {
+  setSettings = (rows: number, cols: number): { rows: number; cols: number; mines: number } => {
     this.rows = rows
     this.cols = cols
+
+    return {
+      rows,
+      cols,
+      mines: this.mines,
+    }
   }
 
   @action

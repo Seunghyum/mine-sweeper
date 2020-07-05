@@ -1,11 +1,7 @@
 import { useCallback, useState } from 'react'
 
-// Returning a new object reference guarantees that a before-and-after
-//   equivalence check will always be false, resulting in a re-render, even
-//   when multiple calls to forceUpdate are batched.
-
 export default function useForceUpdate(): () => void {
-  const [, dispatch] = useState<{}>(Object.create(null))
+  const [, dispatch] = useState<any>(Object.create(null))
   const memoizedDispatch = useCallback((): void => {
     dispatch(Object.create(null))
   }, [dispatch])

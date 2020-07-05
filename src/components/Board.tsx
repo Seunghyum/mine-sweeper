@@ -1,5 +1,5 @@
 // import { useBoardStore } from 'stores'
-import 'mobx-react-lite/batchingForReactDom'
+// import 'mobx-react-lite/batchingForReactDom'
 
 import { useObserver } from 'mobx-react-lite'
 import * as React from 'react'
@@ -10,10 +10,6 @@ import { useStores } from '~helpers/useStores'
 import { NodeType } from '~utils/Node'
 
 import BoardCell from './BoardCell'
-
-interface Store {
-  renderElement: ReactElement[] | void
-}
 
 const Board = (): ReactElement<void, any> => {
   const { nodeStore } = useStores()
@@ -27,9 +23,6 @@ const Board = (): ReactElement<void, any> => {
           <BoardCell
             id={`cell-${i}-${j}`}
             index={[i, j]}
-            // hasMine={node.hasMine}
-            // isOpened={node.isOpened}
-            // adjacent={node.adjacent}
             node={node}
             forceUpdate={forceUpdate}
             key={`cell-${i}-${j}`}
@@ -42,6 +35,6 @@ const Board = (): ReactElement<void, any> => {
     return renderElements
   }
 
-  return useObserver(() => <>{renderBoard()}</>)
+  return useObserver(() => <div className="board-wrapper">{renderBoard()}</div>)
 }
 export default Board

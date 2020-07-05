@@ -19,7 +19,7 @@ export interface NodeIndexMapType {
 
 class NodeIndexMap {
   indexes: any[] = []
-  mineSet: Set<any> = new Set()
+  mineSet: Set<any> | undefined
 
   initMineSet = ({
     rows,
@@ -31,6 +31,7 @@ class NodeIndexMap {
     mines: number
   }): Set<any> | void => {
     if (rows * cols < mines) return alert('Number of mines exceed total cells')
+    this.mineSet = new Set()
     const checkNumSet = new Set()
     for (let i = 0; i < mines; i++) {
       while (true) {
@@ -52,7 +53,7 @@ class NodeIndexMap {
     return this.mineSet
   }
 
-  setIndexes(props: { index: [number, number]; node: NodeType }) {
+  setIndexes(props: { index: [number, number]; node: NodeType }): void {
     const { index, node } = props
     const x = index[0]
     const y = index[1]
@@ -60,18 +61,18 @@ class NodeIndexMap {
     this.indexes[x][y] = node
   }
 
-  initIndexes() {
+  initIndexes(): void {
     this.indexes = []
   }
 
-  getNodeByIndex(index: [number, number]) {
+  getNodeByIndex(index: [number, number]): [number, number] {
     const x = index[1]
     const y = index[0]
 
     return this.indexes[x][y]
   }
 
-  updateMinesInIndexMap() {
+  updateMinesInIndexMap(): void {
     this.indexes.forEach(row => {
       row.forEach((node: NodeType) => {
         const [x, y] = node.index
@@ -103,7 +104,7 @@ class NodeIndexMap {
     })
   }
 
-  updateZeroAdjacentNodeToOpen(index: [number, number]) {
+  updateZeroAdjacentNodeToOpen(index: [number, number]): void {
     const [x, y] = index
     const targetNode = this.indexes[x] ? this.indexes[x][y] : null
     if (!targetNode) return
@@ -121,7 +122,7 @@ class NodeIndexMap {
     }
   }
 
-  revealAllNodes() {
+  revealAllNodes(): void {
     this.indexes.forEach(row => {
       row.forEach((node: NodeType) => {
         node.setIsOpened()
@@ -129,4 +130,5 @@ class NodeIndexMap {
     })
   }
 }
-export default new NodeIndexMap()
+// export default new NodeIndexMap()
+export default NodeIndexMap

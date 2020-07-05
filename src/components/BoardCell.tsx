@@ -1,4 +1,3 @@
-import { useObserver } from 'mobx-react-lite'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 
@@ -55,23 +54,28 @@ function BoardCell(props: Props): React.ReactElement<Props> {
   }
 
   useEffect(() => {
-    setMineCount(adjacent || 0)
+    setMineCount(adjacent || ' ')
   }, [adjacent])
 
   useEffect(() => {
     setLocalIsOpened(isOpened)
   }, [isOpened])
 
-  return useObserver(() => (
-    <div
-      id={id}
-      className={`cell ${hasMine ? 'bomb' : ''}`}
-      onClick={e => handleClick(e)}
-      onContextMenu={e => handleClick(e)}
-    >
-      {isFlagged && <i className="fas fa-flag" />}
-      {localIsOpened ? mineCount : undefined}
+  return (
+    <div className="cell-wrapper">
+      <div
+        id={id}
+        className={`
+          cell 
+          ${isFlagged && !localIsOpened && 'flaged'} 
+          ${hasMine && localIsOpened && 'bomb'} 
+          ${localIsOpened && 'opened'}`}
+        onClick={e => handleClick(e)}
+        onContextMenu={e => handleClick(e)}
+      >
+        {localIsOpened ? mineCount : ' '}
+      </div>
     </div>
-  ))
+  )
 }
 export default BoardCell

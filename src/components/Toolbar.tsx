@@ -1,47 +1,31 @@
-// import { inject } from 'mobx-react'
+import { useObserver } from 'mobx-react-lite'
 import * as React from 'react'
 import { useState } from 'react'
 
 import { useStores } from '~helpers/useStores'
+import { BoardStoreType } from '~stores/BoardStore'
 
-function Tools(): React.ReactElement {
-  const { cols, rows, flags, setSettings, mines } = useStores().boardStore
-  const [inputRows, setInputRows] = useState(rows)
-  const [inputCols, setInputCols] = useState(cols)
+function Tools(props: BoardStoreType): React.ReactElement {
+  const { rows, flags, mines, setSettings } = props
+  const { initCellIdTable } = useStores().nodeStore
+  const [defaultNumber, setDefaultNumber] = useState(rows)
 
   const onClickSetTable = () => {
-    setSettings(inputRows, inputCols)
+    const options = setSettings(defaultNumber, defaultNumber)
+    initCellIdTable(options)
   }
 
   return (
     <div className="tool-wrapper">
       <p>폭탄 수 : {mines}</p>
       <p>깃발 수 : {flags}</p>
-      {/* <div>
-        <span>폭탄 수 조정 : </span>
-        <input
-          name="mines"
-          type="number"
-          value={inputMines}
-          onChange={e => setInputMines(Number(e.target.value))}
-        />
-      </div> */}
       <div>
-        <span>줄 : </span>
+        <span>N X N: </span>
         <input
           name="rows"
           type="number"
-          value={inputRows}
-          onChange={e => setInputRows(Number(e.target.value))}
-        />
-      </div>
-      <div>
-        <span>열 : </span>
-        <input
-          name="cols"
-          type="number"
-          value={inputCols}
-          onChange={e => setInputCols(Number(e.target.value))}
+          value={defaultNumber}
+          onChange={e => setDefaultNumber(Number(e.target.value))}
         />
       </div>
       <button onClick={onClickSetTable}> Start </button>
