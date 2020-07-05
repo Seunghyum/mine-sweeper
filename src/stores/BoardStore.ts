@@ -14,7 +14,6 @@ export interface BoardStoreType {
 export default class BoardStore {
   @observable rows: number
   @observable cols: number
-  // @observable mines: number | undefined
   @observable flags: number
   rootStore: any
   constructor(rootStore: any) {

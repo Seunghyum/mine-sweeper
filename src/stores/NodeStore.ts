@@ -1,6 +1,6 @@
 import { observable } from 'mobx'
 
-import Node, { NodeType } from '~utils/Node'
+import Node from '~utils/Node'
 import NodeIndexMapInstance, { NodeIndexMapType } from '~utils/NodeIndexMap'
 
 export interface NodeStoreType {
@@ -18,9 +18,7 @@ export default class NodeStore {
   }
 
   initCellIdTable = ({ rows, cols, mines }: { rows: number; cols: number; mines: number }): any => {
-    // const mineStringArr: Set<any> | void = this.initMines({ rows, cols, mines })
     const mineStringArr: Set<any> | void = NodeIndexMapInstance.initMineSet({ rows, cols, mines })
-    console.log('mineStringArr : ', mineStringArr)
     if (!mineStringArr) return
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
@@ -34,7 +32,6 @@ export default class NodeStore {
         })
         if (j === cols - 1) isCurrentRowFirstNode = true
         this.NodeIndexMap.setIndexes({ index, node, isCurrentRowFirstNode })
-        // tableRow.push(node)
       }
     }
     this.NodeIndexMap.updateMinesInIndexMap()

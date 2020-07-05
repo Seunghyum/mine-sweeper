@@ -1,8 +1,9 @@
+import { useForceUpdate } from 'mobx-react-lite'
+
 import { NodeType } from './Node'
 
 export interface NodeIndexMapType {
   indexes: any[]
-  currentRowFirstNode: NodeType | null
   setIndexes: (props: {
     index: [number, number]
     node: NodeType
@@ -11,14 +12,14 @@ export interface NodeIndexMapType {
   initMineSet: (props: { rows: number; cols: number; mines: number }) => Set<any> | void
   initIndexes: () => void
   getNodeByIndex: (index: [number, number]) => any[]
-  setCurrentRowFirstNode: (node: NodeType) => void
   updateMinesInIndexMap: () => void
+  updateZeroAdjacentNodeToOpen: (index: [number, number]) => void
+  revealAllNodes: () => void
 }
 
 class NodeIndexMap {
   indexes: any[] = []
   mineSet: Set<any> = new Set()
-  currentRowFirstNode: NodeType | null = null
 
   initMineSet = ({
     rows,
@@ -51,12 +52,10 @@ class NodeIndexMap {
     return this.mineSet
   }
 
-  setIndexes(props: { index: [number, number]; node: NodeType; isCurrentRowFirstNode?: boolean }) {
-    const { index, node, isCurrentRowFirstNode } = props
-    if (!this.currentRowFirstNode || isCurrentRowFirstNode) this.setCurrentRowFirstNode(node)
+  setIndexes(props: { index: [number, number]; node: NodeType }) {
+    const { index, node } = props
     const x = index[0]
     const y = index[1]
-    console.log('this.indexes : ', this.indexes)
     if (!this.indexes[x]) this.indexes.push([])
     this.indexes[x][y] = node
   }
@@ -72,34 +71,60 @@ class NodeIndexMap {
     return this.indexes[x][y]
   }
 
-  setCurrentRowFirstNode(node: NodeType) {
-    this.currentRowFirstNode = node
-  }
-
   updateMinesInIndexMap() {
     this.indexes.forEach(row => {
       row.forEach((node: NodeType) => {
         const [x, y] = node.index
+        const adjacentTop = this.indexes[x - 1] ? this.indexes[x - 1][y] : null
+        const adjacentBottom = this.indexes[x + 1] ? this.indexes[x + 1][y] : null
+        const adjacentleft = this.indexes[x] ? this.indexes[x][y - 1] : null
+        const adjacentRight = this.indexes[x] ? this.indexes[x][y + 1] : null
+        if (adjacentTop) node.setTopNode(adjacentTop)
+        if (adjacentBottom) node.setBottomNode(adjacentBottom)
+        if (adjacentleft) node.setLeftNode(adjacentleft)
+        if (adjacentRight) node.setRightNode(adjacentRight)
         if (node.hasMine) {
-          const adjacentTop = this.indexes[x - 1] ? this.indexes[x - 1][y] : null
           const adjacentTopRight = this.indexes[x - 1] ? this.indexes[x - 1][y + 1] : null
           const adjacentTopLeft = this.indexes[x - 1] ? this.indexes[x - 1][y - 1] : null
-          const adjacentBottom = this.indexes[x + 1] ? this.indexes[x + 1][y] : null
           const adjacentBottomRight = this.indexes[x + 1] ? this.indexes[x + 1][y + 1] : null
           const adjacentBottomLeft = this.indexes[x + 1] ? this.indexes[x + 1][y - 1] : null
-          const adjacentleft = this.indexes[x] ? this.indexes[x][y - 1] : null
-          const adjacentRight = this.indexes[x] ? this.indexes[x][y + 1] : null
-          if (adjacentTop && !adjacentTop.hasMine) adjacentTop.incrementAdjacent()
           if (adjacentTopRight && !adjacentTopRight.hasMine) adjacentTopRight.incrementAdjacent()
           if (adjacentTopLeft && !adjacentTopLeft.hasMine) adjacentTopLeft.incrementAdjacent()
-          if (adjacentBottom && !adjacentBottom.hasMine) adjacentBottom.incrementAdjacent()
           if (adjacentBottomRight && !adjacentBottomRight.hasMine)
             adjacentBottomRight.incrementAdjacent()
           if (adjacentBottomLeft && !adjacentBottomLeft.hasMine)
             adjacentBottomLeft.incrementAdjacent()
+          if (adjacentTop && !adjacentTop.hasMine) adjacentTop.incrementAdjacent()
+          if (adjacentBottom && !adjacentBottom.hasMine) adjacentBottom.incrementAdjacent()
           if (adjacentleft && !adjacentleft.hasMine) adjacentleft.incrementAdjacent()
           if (adjacentRight && !adjacentRight.hasMine) adjacentRight.incrementAdjacent()
         }
+      })
+    })
+  }
+
+  updateZeroAdjacentNodeToOpen(index: [number, number]) {
+    const [x, y] = index
+    const targetNode = this.indexes[x] ? this.indexes[x][y] : null
+    if (!targetNode) return
+    if (targetNode.isOpened === true) return
+    this.indexes[x][y].setIsOpened()
+    if (targetNode.adjacent === 0) {
+      this.updateZeroAdjacentNodeToOpen([x, y + 1])
+      this.updateZeroAdjacentNodeToOpen([x, y - 1])
+      this.updateZeroAdjacentNodeToOpen([x - 1, y])
+      this.updateZeroAdjacentNodeToOpen([x - 1, y + 1])
+      this.updateZeroAdjacentNodeToOpen([x - 1, y - 1])
+      this.updateZeroAdjacentNodeToOpen([x + 1, y])
+      this.updateZeroAdjacentNodeToOpen([x + 1, y + 1])
+      this.updateZeroAdjacentNodeToOpen([x + 1, y - 1])
+    }
+  }
+
+  revealAllNodes() {
+    this.indexes.forEach(row => {
+      row.forEach((node: NodeType) => {
+        node.setIsOpened()
       })
     })
   }

@@ -1,26 +1,31 @@
+import { useObserver } from 'mobx-react-lite'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 
 import { useStores } from '~helpers/useStores'
+import { NodeType } from '~utils/Node'
 interface Props {
   id: string
-  hasMine: boolean
-  aroundMineCount: number | void
+  node: NodeType
+  index: [number, number]
+  forceUpdate: () => void
   increaseFlags?: () => void
   decreaseFlags?: () => void
 }
 
 function BoardCell(props: Props): React.ReactElement<Props> {
-  const { id, hasMine, aroundMineCount } = props
+  const { id, node, index, forceUpdate } = props
+  const [x, y] = index
   const { increaseFlags, decreaseFlags } = useStores().boardStore
-
-  const [isOpened, setIsOpened] = useState(false)
+  const { nodeStore } = useStores()
+  const { hasMine, adjacent, isOpened } = nodeStore.NodeIndexMap.indexes[x][y]
+  const [localIsOpened, setLocalIsOpened] = useState(isOpened)
   const [isFlagged, setIsFlagged] = useState(false)
   const [mineCount, setMineCount] = useState(0)
 
   const setCellText = () => {
     if (isFlagged) return <i className="fas fa-flag" />
-    if (isOpened) return aroundMineCount || '0'
+    if (isOpened) return adjacent || '0'
 
     return ' '
   }
@@ -29,12 +34,15 @@ function BoardCell(props: Props): React.ReactElement<Props> {
     if (isOpened) return false
     e.preventDefault()
     if (e.type === 'click') {
-      console.log('=====!!!')
       // left click
-      if (!hasMine) setIsOpened(true)
-      else {
+      if (!hasMine) {
+        if (adjacent === 0) nodeStore.NodeIndexMap.updateZeroAdjacentNodeToOpen(index)
+        else node.setIsOpened()
+      } else {
         alert('마인 건드림!')
+        nodeStore.NodeIndexMap.revealAllNodes()
       }
+      forceUpdate()
     } else if (e.type === 'contextmenu') {
       // right click
       if (!isOpened) {
@@ -43,15 +51,18 @@ function BoardCell(props: Props): React.ReactElement<Props> {
         setIsFlagged(prev => !prev)
       }
     }
-    // this.props.setZeroMineBoxes(id)
     setCellText()
   }
 
   useEffect(() => {
-    setMineCount(aroundMineCount || 0)
-  }, [aroundMineCount])
+    setMineCount(adjacent || 0)
+  }, [adjacent])
 
-  return (
+  useEffect(() => {
+    setLocalIsOpened(isOpened)
+  }, [isOpened])
+
+  return useObserver(() => (
     <div
       id={id}
       className={`cell ${hasMine ? 'bomb' : ''}`}
@@ -59,8 +70,8 @@ function BoardCell(props: Props): React.ReactElement<Props> {
       onContextMenu={e => handleClick(e)}
     >
       {isFlagged && <i className="fas fa-flag" />}
-      {isOpened ? mineCount : undefined}
+      {localIsOpened ? mineCount : undefined}
     </div>
-  )
+  ))
 }
 export default BoardCell
