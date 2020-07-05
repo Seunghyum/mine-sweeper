@@ -17,10 +17,24 @@ function Tools(props: BoardStoreType): React.ReactElement {
 
   return (
     <div className="tool-wrapper">
-      <p>폭탄 수 : {mines}</p>
-      <p>깃발 수 : {flags}</p>
+      <table className="tool-wrapper__dashboard">
+        <tbody>
+          <tr>
+            <td>
+              <img src="https://img.icons8.com/emoji/48/000000/bomb-emoji.png" />
+            </td>
+            <td>{mines}</td>
+          </tr>
+          <tr>
+            <td>
+              <img src="https://img.icons8.com/office/40/000000/filled-flag.png" />
+            </td>
+            <td>{flags}</td>
+          </tr>
+        </tbody>
+      </table>
       <div>
-        <span>N X N: </span>
+        <p>Map Config (N X N)</p>
         <input
           name="rows"
           type="number"
