@@ -13,10 +13,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+#app {
+  height: 100vh;
+  background-color: rgba(0,0,0,0.1);
+}
+.mine-sweeper-table {
+  margin: auto;
+}
 
 .tool-wrapper {
+  padding-top: 20px;
   text-align: center;
-  margin-bottom:30px;
 }
 .tool-wrapper__dashboard {
   margin: 0 auto 15px auto;
@@ -31,6 +38,7 @@ code {
 .board-wrapper {
   width: fit-content;
   margin: auto;
+  background-color: white;
 }
 .cell-wrapper {
   position: relative;
@@ -63,6 +71,15 @@ code {
   }
   &.flaged {
     background-image: url('https://img.icons8.com/office/40/000000/filled-flag.png');
+  }
+}
+.btn-start {
+  margin: 10px;
+  width:40px;
+  height: 40px;
+  padding: 0px;
+  img {
+    width: 100%;
   }
 }
 .clear { 

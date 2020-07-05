@@ -17,6 +17,18 @@ function Tools(props: BoardStoreType): React.ReactElement {
 
   return (
     <div className="tool-wrapper">
+      <div>
+        <p>Map Config (N X N)</p>
+        <input
+          name="rows"
+          type="number"
+          value={defaultNumber}
+          onChange={e => setDefaultNumber(Number(e.target.value))}
+        />
+      </div>
+      <button className="btn-start" onClick={onClickSetTable}>
+        <img src="https://img.icons8.com/emoji/48/000000/slightly-smiling-face.png" />{' '}
+      </button>
       <table className="tool-wrapper__dashboard">
         <tbody>
           <tr>
@@ -33,16 +45,6 @@ function Tools(props: BoardStoreType): React.ReactElement {
           </tr>
         </tbody>
       </table>
-      <div>
-        <p>Map Config (N X N)</p>
-        <input
-          name="rows"
-          type="number"
-          value={defaultNumber}
-          onChange={e => setDefaultNumber(Number(e.target.value))}
-        />
-      </div>
-      <button onClick={onClickSetTable}> Start </button>
     </div>
   )
 }

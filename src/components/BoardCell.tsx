@@ -38,7 +38,6 @@ function BoardCell(props: Props): React.ReactElement<Props> {
         if (adjacent === 0) nodeStore.NodeIndexMap.updateZeroAdjacentNodeToOpen(index)
         else node.setIsOpened()
       } else {
-        alert('마인 건드림!')
         nodeStore.NodeIndexMap.revealAllNodes()
       }
       forceUpdate()
