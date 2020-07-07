@@ -1,4 +1,5 @@
 {
+  "homepage": "https://seunghyum.github.io/mine-sweeper",
   "name": "mine-sweeper",
   "version": "1.0.0",
   "main": "index.js",
@@ -10,7 +11,9 @@
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
     "build": "webpack --config ./build/webpack.config.prod.js",
     "sb": "start-storybook --port 1234",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "husky": {
     "hooks": {
@@ -76,6 +79,7 @@
     "eslint-plugin-react-hooks": "^2.5.0",
     "eslint-plugin-simple-import-sort": "^5.0.2",
     "file-loader": "^5.1.0",
+    "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.8",

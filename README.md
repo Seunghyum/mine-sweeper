@@ -1,39 +1,15 @@
-# react-base
+# mine-sweeper
 
-## spec
+: Mine Swepper game for skill study and for fun 😆
 
-- react
-- storybook
-- cypress
+## Spac
 
-## Prerequisite - setting env files
+- Language : Typescript
+- Frontend : React
+- Store : Mobx
+- Bundler : Wepback
 
-1. make **env** directory to root path
-2. make **dev.env**, **prod.env** file
-3. type **BASE_URL**, **API_PROT** like
+## Data Structure
 
-```Shell
-BASE_URL="localhost"
-API_PORT="3000"
-```
-
-it can be edited in
-
-- /build/webpack.config.dev.js
-- /build/webpack.config.prod.js
-
-```javascript
-new Dotenv({
-  path: './env/dev.env',
-  ...
-})
-```
-
-## Running
-
-```Shell
-yarn dev # run develop server
-yarn build # run build script
-yarn sb # run storybook
-cypress:open # run cypress for e2e test
-```
+- Node : Node for each Board Cell
+- NodeIndexMap : 2 Dimensional Array. Index of each Node. For access directly to Node when user click cell.

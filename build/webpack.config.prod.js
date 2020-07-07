@@ -6,7 +6,7 @@ const baseConfig = require('./webpack.config.base')
 module.exports = merge(baseConfig, {
   mode: 'production',
   output: {
-    publicPath: '/dist/',
+    publicPath: '/mine-sweeper/',
   },
   plugins: [
     new Dotenv({
