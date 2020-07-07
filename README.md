@@ -17,3 +17,5 @@ Mine Swepper game for skill study and for fun 😆
 
 - Node : Node for each Board Cell
 - NodeIndexMap : 2 Dimensional Array. Index of each Node. For access directly to Node when user click cell.
+
+![mine-sweeper-data-structure](./mine-sweeper-data-structure.png)
