@@ -2,6 +2,8 @@
 
 : Mine Swepper game for skill study and for fun 😆
 
+![prewview_img](./preview.png)
+
 ## Spac
 
 - Language : Typescript
