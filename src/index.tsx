@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import App from '~src/App'
-import RootStore from '~stores'
+import RootStore from '~stores/index'
 
 import { StoreProvider } from './helpers/useProvider'
 
