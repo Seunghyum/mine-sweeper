@@ -8,12 +8,18 @@ import { BoardStoreType } from '~stores/BoardStore'
 function Tools(props: BoardStoreType): React.ReactElement {
   const { rows, flags, mines, setSettings, isGameFailed, setIsGameFailed } = props
   const { initCellIdTable } = useStores().nodeStore
+  const { setIsCellLoading } = useStores().boardStore
   const [defaultNumber, setDefaultNumber] = useState(rows)
 
-  const onClickSetTable = () => {
+  const onClickSetTable = async () => {
     const options = setSettings(defaultNumber, defaultNumber)
     setIsGameFailed(false)
-    initCellIdTable(options)
+    setIsCellLoading(true)
+    initCellIdTable(options).then(() => {
+      setTimeout(() => {
+        setIsCellLoading(false)
+      }, 1000)
+    })
   }
 
   return (

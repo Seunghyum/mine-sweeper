@@ -10,6 +10,7 @@ import BoardCell from './BoardCell'
 
 const Board = (): ReactElement<void, any> => {
   const { nodeStore } = useStores()
+  const { boardStore } = useStores()
   const forceUpdate = useForceUpdate()
 
   const renderBoard = () => {
@@ -21,6 +22,7 @@ const Board = (): ReactElement<void, any> => {
             id={`cell-${i}-${j}`}
             index={[i, j]}
             node={node}
+            isCellLoading={boardStore.isCellLoading}
             forceUpdate={forceUpdate}
             key={`cell-${i}-${j}`}
           />,

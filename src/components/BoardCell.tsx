@@ -7,13 +7,14 @@ interface Props {
   id: string
   node: NodeType
   index: [number, number]
+  isCellLoading: boolean
   forceUpdate: () => void
   increaseFlags?: () => void
   decreaseFlags?: () => void
 }
 
 function BoardCell(props: Props): React.ReactElement<Props> {
-  const { id, node, index, forceUpdate } = props
+  const { id, node, index, forceUpdate, isCellLoading } = props
   const [x, y] = index
   const { boardStore } = useStores()
   const { nodeStore } = useStores()
@@ -67,13 +68,15 @@ function BoardCell(props: Props): React.ReactElement<Props> {
         id={id}
         className={`
           cell 
-          ${isFlagged && !localIsOpened && 'flaged'} 
-          ${hasMine && localIsOpened && 'bomb'} 
-          ${localIsOpened && 'opened'}`}
+          ${(isCellLoading && 'skeleton-cell') || ''}
+          ${(isFlagged && !localIsOpened && 'flaged') || ''} 
+          ${(hasMine && localIsOpened && 'bomb') || ''} 
+          ${(localIsOpened && 'opened') || ''}
+        `}
         onClick={e => handleClick(e)}
         onContextMenu={e => handleClick(e)}
       >
-        {localIsOpened ? mineCount : ' '}
+        {isCellLoading ? ' ' : localIsOpened ? mineCount : ' '}
       </div>
     </div>
   )
