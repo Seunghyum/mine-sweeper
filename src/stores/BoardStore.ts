@@ -1,5 +1,7 @@
 import { action, computed, observable } from 'mobx'
 
+import { RootStoreType } from './index'
+
 export interface BoardStoreType {
   rows?: number
   cols?: number
@@ -8,7 +10,7 @@ export interface BoardStoreType {
   isGameFailed?: boolean
   isCellLoading?: boolean
   isLoading?: boolean
-  rootStore?: any
+  rootStore?: RootStoreType
   increaseFlags?: () => void
   decreaseFlags?: () => void
   initFlags?: () => void
@@ -24,8 +26,8 @@ export default class BoardStore {
   @observable isGameFailed = false
   @observable isLoading = false
   @observable isCellLoading = false
-  rootStore: any
-  constructor(rootStore: any) {
+  rootStore: RootStoreType
+  constructor(rootStore: RootStoreType) {
     this.rootStore = rootStore
     this.initSettings()
   }

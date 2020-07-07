@@ -8,13 +8,13 @@ import { NodeType } from '~utils/Node'
 
 import BoardCell from './BoardCell'
 
-const Board = (): ReactElement<void, any> => {
+const Board = (): ReactElement<void, string> => {
   const { nodeStore } = useStores()
   const { boardStore } = useStores()
   const forceUpdate = useForceUpdate()
 
   const renderBoard = () => {
-    const renderElements: any = []
+    const renderElements: JSX.Element[] = []
     nodeStore.NodeIndexMap.indexes.forEach((row: [], i: number) => {
       row.forEach((node: NodeType, j: number) => {
         renderElements.push(

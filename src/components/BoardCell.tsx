@@ -28,7 +28,7 @@ function BoardCell(props: Props): React.ReactElement<Props> {
     return ' '
   }
 
-  const handleClick = (e: any) => {
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     if (isOpened) return false
     e.preventDefault()
     if (e.type === 'click') {
@@ -74,8 +74,8 @@ function BoardCell(props: Props): React.ReactElement<Props> {
           ${(hasMine && node.isOpened && 'bomb') || ''} 
           ${(node.isOpened && 'opened') || ''}
         `}
-        onClick={e => handleClick(e)}
-        onContextMenu={e => handleClick(e)}
+        onClick={handleClick}
+        onContextMenu={handleClick}
       >
         {renderText()}
       </div>
