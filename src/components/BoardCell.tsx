@@ -15,7 +15,7 @@ interface Props {
 function BoardCell(props: Props): React.ReactElement<Props> {
   const { id, node, index, forceUpdate } = props
   const [x, y] = index
-  const { increaseFlags, decreaseFlags } = useStores().boardStore
+  const { boardStore } = useStores()
   const { nodeStore } = useStores()
   const { hasMine, adjacent, isOpened } = nodeStore.NodeIndexMap.indexes[x][y]
   const [localIsOpened, setLocalIsOpened] = useState(isOpened)
@@ -35,17 +35,18 @@ function BoardCell(props: Props): React.ReactElement<Props> {
     if (e.type === 'click') {
       // left click
       if (!hasMine) {
-        if (adjacent === 0) nodeStore.NodeIndexMap.updateZeroAdjacentNodeToOpen(index)
+        if (adjacent === 0) nodeStore.NodeIndexMap.openAdjacentNode(node)
         else node.setIsOpened()
       } else {
         nodeStore.NodeIndexMap.revealAllNodes()
+        boardStore.setIsGameFailed(true)
       }
       forceUpdate()
     } else if (e.type === 'contextmenu') {
       // right click
       if (!isOpened) {
-        if (!isFlagged) increaseFlags()
-        else decreaseFlags()
+        if (!isFlagged) boardStore.increaseFlags()
+        else boardStore.decreaseFlags()
         setIsFlagged(prev => !prev)
       }
     }

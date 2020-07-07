@@ -5,17 +5,21 @@ export interface BoardStoreType {
   cols?: number
   mines?: number
   flags?: number
-  getFlags?: number
+  isGameFailed?: boolean
+  isLoading?: boolean
   rootStore?: any
   increaseFlags?: () => void
   decreaseFlags?: () => void
   setSettings?: (rows: number, cols: number) => { rows: number; cols: number; mines: number }
+  setIsGameFailed?: (boolean: boolean) => void
 }
 
 export default class BoardStore {
   @observable rows: number
   @observable cols: number
   @observable flags: number
+  @observable isGameFailed = false
+  @observable isLoading = false
   rootStore: any
   constructor(rootStore: any) {
     this.rootStore = rootStore
@@ -24,10 +28,6 @@ export default class BoardStore {
 
   @computed get mines(): number {
     return Math.floor((this.rows * this.cols) / 4)
-  }
-
-  @computed get getFlags(): number {
-    return this.flags - 2
   }
 
   @action
@@ -57,5 +57,10 @@ export default class BoardStore {
     this.rows = 8
     this.cols = 8
     this.flags = 0
+  }
+
+  @action
+  setIsGameFailed = (boolean: boolean): void => {
+    this.isGameFailed = boolean
   }
 }

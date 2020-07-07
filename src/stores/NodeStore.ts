@@ -1,7 +1,6 @@
 import { observable } from 'mobx'
 
 import Node from '~utils/Node'
-// import NodeIndexMapInstance, { NodeIndexMapType } from '~utils/NodeIndexMap'
 import NodeIndexMapClass, { NodeIndexMapType } from '~utils/NodeIndexMap'
 export interface NodeStoreType {
   NodeIndexMap: NodeIndexMapType
@@ -10,7 +9,6 @@ export interface NodeStoreType {
 }
 
 export default class NodeStore {
-  // @observable NodeIndexMap: NodeIndexMapType = NodeIndexMapInstance
   @observable NodeIndexMap: NodeIndexMapType = new NodeIndexMapClass()
   rootStore: any
   constructor(rootStore: any) {

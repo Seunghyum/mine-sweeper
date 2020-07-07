@@ -13,7 +13,7 @@ export interface NodeIndexMapType {
   initIndexes: () => void
   getNodeByIndex: (index: [number, number]) => any[]
   updateMinesInIndexMap: () => void
-  updateZeroAdjacentNodeToOpen: (index: [number, number]) => void
+  openAdjacentNode: (index: NodeType) => void
   revealAllNodes: () => void
 }
 
@@ -104,21 +104,15 @@ class NodeIndexMap {
     })
   }
 
-  updateZeroAdjacentNodeToOpen(index: [number, number]): void {
-    const [x, y] = index
-    const targetNode = this.indexes[x] ? this.indexes[x][y] : null
-    if (!targetNode) return
-    if (targetNode.isOpened === true) return
-    this.indexes[x][y].setIsOpened()
-    if (targetNode.adjacent === 0) {
-      this.updateZeroAdjacentNodeToOpen([x, y + 1])
-      this.updateZeroAdjacentNodeToOpen([x, y - 1])
-      this.updateZeroAdjacentNodeToOpen([x - 1, y])
-      this.updateZeroAdjacentNodeToOpen([x - 1, y + 1])
-      this.updateZeroAdjacentNodeToOpen([x - 1, y - 1])
-      this.updateZeroAdjacentNodeToOpen([x + 1, y])
-      this.updateZeroAdjacentNodeToOpen([x + 1, y + 1])
-      this.updateZeroAdjacentNodeToOpen([x + 1, y - 1])
+  openAdjacentNode(node: NodeType): void {
+    if (!node) return
+    if (node.isOpened === true) return
+    node.setIsOpened()
+    if (node.adjacent === 0) {
+      this.openAdjacentNode(node.top)
+      this.openAdjacentNode(node.bottom)
+      this.openAdjacentNode(node.right)
+      this.openAdjacentNode(node.left)
     }
   }
 
@@ -130,5 +124,4 @@ class NodeIndexMap {
     })
   }
 }
-// export default new NodeIndexMap()
 export default NodeIndexMap

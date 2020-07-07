@@ -6,11 +6,19 @@ import { useStores } from '~helpers/useStores'
 import Board from './components/Board'
 import Toolbar from './components/Toolbar'
 function App(): React.ReactElement {
-  const { cols, rows, flags, mines, setSettings } = useStores().boardStore
+  const { boardStore } = useStores()
 
   return useObserver(() => (
     <div className="mine-sweeper-table">
-      <Toolbar setSettings={setSettings} rows={rows} cols={cols} flags={flags} mines={mines} />
+      <Toolbar
+        setSettings={boardStore.setSettings}
+        isGameFailed={boardStore.isGameFailed}
+        setIsGameFailed={boardStore.setIsGameFailed}
+        rows={boardStore.rows}
+        cols={boardStore.cols}
+        flags={boardStore.flags}
+        mines={boardStore.mines}
+      />
       <Board />
     </div>
   ))

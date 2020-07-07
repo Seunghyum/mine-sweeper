@@ -6,29 +6,39 @@ import { useStores } from '~helpers/useStores'
 import { BoardStoreType } from '~stores/BoardStore'
 
 function Tools(props: BoardStoreType): React.ReactElement {
-  const { rows, flags, mines, setSettings } = props
+  const { rows, flags, mines, setSettings, isGameFailed, setIsGameFailed } = props
   const { initCellIdTable } = useStores().nodeStore
   const [defaultNumber, setDefaultNumber] = useState(rows)
 
   const onClickSetTable = () => {
     const options = setSettings(defaultNumber, defaultNumber)
+    setIsGameFailed(false)
     initCellIdTable(options)
   }
 
   return (
     <div className="tool-wrapper">
+      <p>Map Config (N X N)</p>
       <div>
-        <p>Map Config (N X N)</p>
         <input
+          className="number-pick"
           name="rows"
           type="number"
           value={defaultNumber}
           onChange={e => setDefaultNumber(Number(e.target.value))}
         />
+        <button className="btn-start" onClick={onClickSetTable}>
+          {
+            <img
+              src={
+                isGameFailed
+                  ? 'https://img.icons8.com/emoji/48/000000/loudly-crying-face.png'
+                  : 'https://img.icons8.com/emoji/48/000000/slightly-smiling-face.png'
+              }
+            />
+          }
+        </button>
       </div>
-      <button className="btn-start" onClick={onClickSetTable}>
-        <img src="https://img.icons8.com/emoji/48/000000/slightly-smiling-face.png" />{' '}
-      </button>
       <table className="tool-wrapper__dashboard">
         <tbody>
           <tr>

@@ -1,9 +1,6 @@
-// import { useBoardStore } from 'stores'
-// import 'mobx-react-lite/batchingForReactDom'
-
 import { useObserver } from 'mobx-react-lite'
 import * as React from 'react'
-import { ReactElement, useEffect } from 'react'
+import { ReactElement } from 'react'
 
 import useForceUpdate from '~helpers/useForceUpdate'
 import { useStores } from '~helpers/useStores'

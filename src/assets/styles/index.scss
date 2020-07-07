@@ -73,11 +73,24 @@ code {
     background-image: url('https://img.icons8.com/office/40/000000/filled-flag.png');
   }
 }
+.number-pick {
+  width: 90px;
+  height: 20px;
+  padding: 10px;
+  border: 1px solid silver;
+  margin: 0px;
+  font-size: 18px;
+  display: inline-block;
+  vertical-align: middle;
+}
 .btn-start {
-  margin: 10px;
-  width:40px;
+  display: inline-block;
+  width: 40px;
   height: 40px;
   padding: 0px;
+  border: 1px solid silver;
+  vertical-align: middle;
+  cursor: pointer;
   img {
     width: 100%;
   }
