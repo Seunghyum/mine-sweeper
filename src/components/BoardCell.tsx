@@ -19,9 +19,7 @@ function BoardCell(props: Props): React.ReactElement<Props> {
   const { boardStore } = useStores()
   const { nodeStore } = useStores()
   const { hasMine, adjacent, isOpened } = nodeStore.NodeIndexMap.indexes[x][y]
-  const [localIsOpened, setLocalIsOpened] = useState(isOpened)
   const [isFlagged, setIsFlagged] = useState(false)
-  const [mineCount, setMineCount] = useState(0)
 
   const setCellText = () => {
     if (isFlagged) return <i className="fas fa-flag" />
@@ -55,12 +53,8 @@ function BoardCell(props: Props): React.ReactElement<Props> {
   }
 
   useEffect(() => {
-    setMineCount(adjacent || ' ')
-  }, [adjacent])
-
-  useEffect(() => {
-    setLocalIsOpened(isOpened)
-  }, [isOpened])
+    if (isCellLoading) setIsFlagged(false)
+  }, [isCellLoading])
 
   return (
     <div className="cell-wrapper">
@@ -69,14 +63,14 @@ function BoardCell(props: Props): React.ReactElement<Props> {
         className={`
           cell 
           ${(isCellLoading && 'skeleton-cell') || ''}
-          ${(isFlagged && !localIsOpened && 'flaged') || ''} 
-          ${(hasMine && localIsOpened && 'bomb') || ''} 
-          ${(localIsOpened && 'opened') || ''}
+          ${(isFlagged && !node.isOpened && 'flaged') || ''} 
+          ${(hasMine && node.isOpened && 'bomb') || ''} 
+          ${(node.isOpened && 'opened') || ''}
         `}
         onClick={e => handleClick(e)}
         onContextMenu={e => handleClick(e)}
       >
-        {isCellLoading ? ' ' : localIsOpened ? mineCount : ' '}
+        {isCellLoading ? ' ' : node.isOpened ? node.adjacent : ' '}
       </div>
     </div>
   )

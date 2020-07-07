@@ -7,8 +7,11 @@ import App from '~src/App'
 import RootStore from '~stores'
 
 import { StoreProvider } from './helpers/useProvider'
+
+const rootStore = new RootStore()
+
 ReactDOM.render(
-  <StoreProvider value={new RootStore()}>
+  <StoreProvider value={rootStore}>
     <App />
   </StoreProvider>,
   document.getElementById('app'),
