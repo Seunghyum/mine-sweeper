@@ -1,6 +1,8 @@
 # mine-sweeper
 
-: Mine Swepper game for skill study and for fun 😆
+Mine Swepper game for skill study and for fun 😆
+
+[Let's play in here](seunghyum.github.io/mine-sweeper/)
 
 ![prewview_img](./preview.png)
 
