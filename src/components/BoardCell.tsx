@@ -53,7 +53,10 @@ function BoardCell(props: Props): React.ReactElement<Props> {
   }
 
   useEffect(() => {
-    if (isCellLoading) setIsFlagged(false)
+    if (isCellLoading) {
+      setIsFlagged(false)
+      boardStore.initFlags()
+    }
   }, [isCellLoading])
 
   return (

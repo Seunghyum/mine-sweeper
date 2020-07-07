@@ -11,6 +11,7 @@ export interface BoardStoreType {
   rootStore?: any
   increaseFlags?: () => void
   decreaseFlags?: () => void
+  initFlags?: () => void
   setSettings?: (rows: number, cols: number) => { rows: number; cols: number; mines: number }
   setIsGameFailed?: (boolean: boolean) => void
   setIsCellLoading?: (boolean: boolean) => void
@@ -41,6 +42,11 @@ export default class BoardStore {
   @action
   decreaseFlags = (): void => {
     this.flags -= 1
+  }
+
+  @action
+  initFlags = (): void => {
+    this.flags = 0
   }
 
   @action
