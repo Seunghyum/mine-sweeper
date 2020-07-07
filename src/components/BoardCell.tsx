@@ -52,6 +52,10 @@ function BoardCell(props: Props): React.ReactElement<Props> {
     setCellText()
   }
 
+  const renderText = (): string | number => {
+    return isCellLoading ? ' ' : node.isOpened ? node.adjacent || ' ' : ' '
+  }
+
   useEffect(() => {
     if (isCellLoading) {
       setIsFlagged(false)
@@ -73,7 +77,7 @@ function BoardCell(props: Props): React.ReactElement<Props> {
         onClick={e => handleClick(e)}
         onContextMenu={e => handleClick(e)}
       >
-        {isCellLoading ? ' ' : node.isOpened ? node.adjacent : ' '}
+        {renderText()}
       </div>
     </div>
   )
