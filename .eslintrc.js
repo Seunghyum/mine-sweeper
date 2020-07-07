@@ -2,9 +2,17 @@ module.exports = {
   env: {
     node: true,
     browser: true,
-    jest: true,
+  },
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
   },
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.json',
+    tsconfigRootDir: './',
+  },
   extends: [
     'prettier',
     'prettier/react',
@@ -15,7 +23,7 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
   ],
-  plugins: ['@typescript-eslint', 'react-hooks', 'simple-import-sort'],
+  plugins: ['@typescript-eslint', 'import', 'react-hooks', 'simple-import-sort'],
   rules: {
     'no-console': 'warn',
     'no-eval': 'error',

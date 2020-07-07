@@ -2,13 +2,20 @@ import { useForceUpdate } from 'mobx-react-lite'
 
 import { NodeType } from './Node'
 
+interface setIndexesProps {
+  index: [number, number]
+  node: NodeType
+  isCurrentRowFirstNode?: boolean
+}
+interface initMineSetProps {
+  rows: number
+  cols: number
+  mines: number
+}
+
 export interface NodeIndexMapType {
   indexes: any[]
-  setIndexes: (props: {
-    index: [number, number]
-    node: NodeType
-    isCurrentRowFirstNode?: boolean
-  }) => void
+  setIndexes: (props: setIndexesProps) => void
   initMineSet: (props: { rows: number; cols: number; mines: number }) => Set<any> | void
   initIndexes: () => void
   getNodeByIndex: (index: [number, number]) => any[]
@@ -21,15 +28,7 @@ class NodeIndexMap {
   indexes: any[] = []
   mineSet: Set<any> | undefined
 
-  initMineSet = ({
-    rows,
-    cols,
-    mines,
-  }: {
-    rows: number
-    cols: number
-    mines: number
-  }): Set<any> | void => {
+  initMineSet = ({ rows, cols, mines }: initMineSetProps): Set<any> | void => {
     if (rows * cols < mines) return alert('Number of mines exceed total cells')
     this.mineSet = new Set()
     const checkNumSet = new Set()
@@ -53,7 +52,7 @@ class NodeIndexMap {
     return this.mineSet
   }
 
-  setIndexes(props: { index: [number, number]; node: NodeType }): void {
+  setIndexes(props: setIndexesProps): void {
     const { index, node } = props
     const x = index[0]
     const y = index[1]

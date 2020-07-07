@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "noImplicitAny": true,
     "sourceMap": true,
     "module": "es6",
@@ -14,15 +14,15 @@
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "~src":  ["src/*"],
-      "~utils": ["src/utils/*"],
-      "~stores": ["src/stores/*"],
-      "~helpers": ["src/helpers/*"],
-      "~types": ["src/@types/*"] 
+      "~src/*":  ["src/*"],
+      "~utils/*": ["src/utils/*"],
+      "~stores/*": ["src/stores/*"],
+      "~helpers/*": ["src/helpers/*"],
+      "~types/*": ["src/@types/*"] 
     },
     "typeRoots": [
-      "./src/@types",
       "./node_modules/@types",
-    ]
+    ],
   },
+  "include": ["src"]
 }
