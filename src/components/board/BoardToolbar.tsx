@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useStores } from '~helpers/useStores'
 import { BoardStoreType } from '~stores/BoardStore'
 
-function Tools(props: BoardStoreType): React.ReactElement {
+function BoardToolbar(props: BoardStoreType): React.ReactElement {
   const { rows, flags, mines, setSettings, isGameFailed, setIsGameFailed } = props
   const { initCellIdTable } = useStores().nodeStore
   const { setIsCellLoading } = useStores().boardStore
@@ -15,11 +15,14 @@ function Tools(props: BoardStoreType): React.ReactElement {
     const options = setSettings(defaultNumber, defaultNumber)
     setIsGameFailed(false)
     setIsCellLoading(true)
-    initCellIdTable(options).then(() => {
+    try {
+      await initCellIdTable(options)
       setTimeout(() => {
         setIsCellLoading(false)
       }, 1000)
-    })
+    } catch (err) {
+      console.error('err : ', err)
+    }
   }
 
   return (
@@ -64,4 +67,4 @@ function Tools(props: BoardStoreType): React.ReactElement {
     </div>
   )
 }
-export default Tools
+export default BoardToolbar

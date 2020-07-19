@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { useStores } from '~helpers/useStores'
 import { NodeType } from '~utils/Node'
+
 interface Props {
   id: string
   node: NodeType
@@ -28,32 +29,33 @@ function BoardCell(props: Props): React.ReactElement<Props> {
     return ' '
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handleLeftClick = (e: React.MouseEvent<HTMLElement>) => {
     if (isOpened) return false
     e.preventDefault()
-    if (e.type === 'click') {
-      // left click
-      if (!hasMine) {
-        if (adjacent === 0) nodeStore.NodeIndexMap.openAdjacentNode(node)
-        else node.setIsOpened()
-      } else {
-        nodeStore.NodeIndexMap.revealAllNodes()
-        boardStore.setIsGameFailed(true)
-      }
-      forceUpdate()
-    } else if (e.type === 'contextmenu') {
-      // right click
-      if (!isOpened) {
-        if (!isFlagged) boardStore.increaseFlags()
-        else boardStore.decreaseFlags()
-        setIsFlagged(prev => !prev)
-      }
+    if (hasMine) {
+      nodeStore.NodeIndexMap.revealAllNodes()
+      boardStore.setIsGameFailed(true)
+    } else {
+      if (adjacent === 0) nodeStore.NodeIndexMap.openAdjacentNode(node)
+      else node.setIsOpened(true)
+    }
+    setCellText()
+    forceUpdate()
+  }
+
+  const handleRightClick = (e: React.MouseEvent<HTMLElement>) => {
+    if (isOpened) return false
+    e.preventDefault()
+    if (!isOpened) {
+      if (!isFlagged) boardStore.increaseFlags()
+      else boardStore.decreaseFlags()
+      setIsFlagged(prev => !prev)
     }
     setCellText()
   }
 
   const renderText = (): string | number => {
-    return isCellLoading ? ' ' : node.isOpened ? node.adjacent || ' ' : ' '
+    return isCellLoading ? ' ' : isOpened ? adjacent || ' ' : ' '
   }
 
   useEffect(() => {
@@ -70,12 +72,12 @@ function BoardCell(props: Props): React.ReactElement<Props> {
         className={`
           cell 
           ${(isCellLoading && 'skeleton-cell') || ''}
-          ${(isFlagged && !node.isOpened && 'flaged') || ''} 
-          ${(hasMine && node.isOpened && 'bomb') || ''} 
-          ${(node.isOpened && 'opened') || ''}
+          ${(isFlagged && !isOpened && 'flaged') || ''} 
+          ${(hasMine && isOpened && 'bomb') || ''} 
+          ${(isOpened && 'opened') || ''}
         `}
-        onClick={handleClick}
-        onContextMenu={handleClick}
+        onClick={handleLeftClick}
+        onContextMenu={handleRightClick}
       >
         {renderText()}
       </div>

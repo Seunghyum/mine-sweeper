@@ -12,10 +12,10 @@ export interface NodeType {
   setBottomNode: (node: NodeType) => void
   setLeftNode: (node: NodeType) => void
   setRightNode: (node: NodeType) => void
-  setIsOpened: () => void
+  setIsOpened: (boolean: boolean) => void
 }
 
-class Node {
+class Node implements NodeType {
   index: [number, number] | null
   adjacent: number
   hasMine: boolean
@@ -25,8 +25,7 @@ class Node {
   top: NodeType | null
   bottom: NodeType | null
 
-  constructor(props: { hasMine: boolean; index: [number, number] }) {
-    const { hasMine = false, index } = props
+  constructor({ hasMine = false, index }: { hasMine: boolean; index: [number, number] }) {
     this.index = index
     this.adjacent = 0
     this.hasMine = hasMine
@@ -53,8 +52,8 @@ class Node {
   setBottomNode(node: NodeType): void {
     this.bottom = node
   }
-  setIsOpened(): void {
-    this.isOpened = true
+  setIsOpened(boolean: boolean): void {
+    this.isOpened = boolean
   }
 }
 

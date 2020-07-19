@@ -2,11 +2,11 @@ import { useObserver } from 'mobx-react-lite'
 import * as React from 'react'
 import { ReactElement } from 'react'
 
+import BoardCell from '~components/board/BoardCell'
+import Toolbar from '~components/board/BoardToolbar'
 import useForceUpdate from '~helpers/useForceUpdate'
 import { useStores } from '~helpers/useStores'
 import { NodeType } from '~utils/Node'
-
-import BoardCell from './BoardCell'
 
 const Board = (): ReactElement<void, string> => {
   const { nodeStore } = useStores()
@@ -34,6 +34,19 @@ const Board = (): ReactElement<void, string> => {
     return renderElements
   }
 
-  return useObserver(() => <div className="board-wrapper">{renderBoard()}</div>)
+  return useObserver(() => (
+    <>
+      <Toolbar
+        setSettings={boardStore.setSettings}
+        isGameFailed={boardStore.isGameFailed}
+        setIsGameFailed={boardStore.setIsGameFailed}
+        rows={boardStore.rows}
+        cols={boardStore.cols}
+        flags={boardStore.flags}
+        mines={boardStore.mines}
+      />
+      <div className="board-wrapper">{renderBoard()}</div>
+    </>
+  ))
 }
 export default Board

@@ -1,11 +1,8 @@
-import { useForceUpdate } from 'mobx-react-lite'
-
 import { NodeType } from './Node'
 
 interface setIndexesProps {
   index: [number, number]
   node: NodeType
-  isCurrentRowFirstNode?: boolean
 }
 interface initMineSetProps {
   rows: number
@@ -15,6 +12,7 @@ interface initMineSetProps {
 
 export interface NodeIndexMapType {
   indexes: any[]
+  mineSet: Set<string> | undefined
   setIndexes: (props: setIndexesProps) => void
   initMineSet: (props: { rows: number; cols: number; mines: number }) => Set<any> | void
   initIndexes: () => void
@@ -24,14 +22,16 @@ export interface NodeIndexMapType {
   revealAllNodes: () => void
 }
 
-class NodeIndexMap {
+class NodeIndexMapClass implements NodeIndexMapType {
   indexes: any[] = []
-  mineSet: Set<any> | undefined
+  mineSet: Set<string> | undefined
 
   initMineSet = ({ rows, cols, mines }: initMineSetProps): Set<any> | void => {
     if (rows * cols < mines) return alert('Number of mines exceed total cells')
+
     this.mineSet = new Set()
     const checkNumSet = new Set()
+
     for (let i = 0; i < mines; i++) {
       while (true) {
         const min = 1
@@ -52,8 +52,7 @@ class NodeIndexMap {
     return this.mineSet
   }
 
-  setIndexes(props: setIndexesProps): void {
-    const { index, node } = props
+  setIndexes({ index, node }: setIndexesProps): void {
     const x = index[0]
     const y = index[1]
     if (!this.indexes[x]) this.indexes.push([])
@@ -106,7 +105,7 @@ class NodeIndexMap {
   openAdjacentNode(node: NodeType): void {
     if (!node) return
     if (node.isOpened === true) return
-    node.setIsOpened()
+    node.setIsOpened(true)
     if (node.adjacent === 0) {
       this.openAdjacentNode(node.top)
       this.openAdjacentNode(node.bottom)
@@ -118,9 +117,9 @@ class NodeIndexMap {
   revealAllNodes(): void {
     this.indexes.forEach(row => {
       row.forEach((node: NodeType) => {
-        node.setIsOpened()
+        node.setIsOpened(true)
       })
     })
   }
 }
-export default NodeIndexMap
+export default NodeIndexMapClass

@@ -16,7 +16,7 @@ export interface NodeStoreType {
   initCellIdTable: (options: initCellIdTableProps) => Promise<void>
 }
 
-export default class NodeStore {
+class NodeStore implements NodeStoreType {
   @observable NodeIndexMap: NodeIndexMapType = new NodeIndexMapClass()
   rootStore: RootStoreType
   constructor(rootStore: RootStoreType) {
@@ -27,25 +27,36 @@ export default class NodeStore {
 
   initCellIdTable = ({ rows, cols, mines }: initCellIdTableProps): Promise<void> => {
     return new Promise((resolve, reject) => {
-      this.NodeIndexMap = new NodeIndexMapClass()
-      const mineStringArr: Set<string> | void = this.NodeIndexMap.initMineSet({ rows, cols, mines })
-      if (!mineStringArr) return
-      for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
-          const index: [number, number] = [i, j]
-          const node = new Node({
-            index,
-            hasMine: !!mineStringArr.has(`${i},${j}`),
-          })
-          this.NodeIndexMap.setIndexes({
-            index,
-            node,
-            isCurrentRowFirstNode: j === cols - 1,
-          })
+      try {
+        this.NodeIndexMap = new NodeIndexMapClass()
+        const mineStringArr: Set<string> | void = this.NodeIndexMap.initMineSet({
+          rows,
+          cols,
+          mines,
+        })
+
+        if (!mineStringArr) return
+
+        for (let i = 0; i < rows; i++) {
+          for (let j = 0; j < cols; j++) {
+            const index: [number, number] = [i, j]
+            const node = new Node({
+              index,
+              hasMine: !!mineStringArr.has(`${i},${j}`),
+            })
+            this.NodeIndexMap.setIndexes({
+              index,
+              node,
+            })
+          }
         }
+        this.NodeIndexMap.updateMinesInIndexMap()
+        resolve()
+      } catch (err) {
+        reject(err)
       }
-      this.NodeIndexMap.updateMinesInIndexMap()
-      resolve()
     })
   }
 }
+
+export default NodeStore
