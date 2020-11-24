@@ -2,7 +2,7 @@
 
 Mine Swepper game for skill study and for fun 😆
 
-[Let's play in here](seunghyum.github.io/mine-sweeper/)
+[Let's play in here](https://seunghyum.github.io/mine-sweeper/)
 
 ![prewview_img](./preview.png)
 
