@@ -14,4 +14,4 @@ function ConfettiBackground({ toggle }: { toggle: boolean }): ReactElement {
   )
 }
 
-export default React.memo(ConfettiBackground)
+export default ConfettiBackground
