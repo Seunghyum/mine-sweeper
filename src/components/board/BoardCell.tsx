@@ -46,11 +46,16 @@ function BoardCell(props: Props): React.ReactElement<Props> {
   const handleRightClick = (e: React.MouseEvent<HTMLElement>) => {
     if (isOpened) return false
     e.preventDefault()
-    if (!isOpened) {
-      if (!isFlagged) boardStore.increaseFlags()
-      else boardStore.decreaseFlags()
-      setIsFlagged(prev => !prev)
+    if (isOpened) return
+
+    if (!isFlagged) {
+      boardStore.increaseFlags()
+      if (!hasMine) boardStore.increaseFaultFlags()
+    } else {
+      boardStore.decreaseFlags()
+      if (hasMine) boardStore.decreaseFaultFlags()
     }
+    setIsFlagged(prev => !prev)
     setCellText()
   }
 
@@ -61,7 +66,6 @@ function BoardCell(props: Props): React.ReactElement<Props> {
   useEffect(() => {
     if (isCellLoading) {
       setIsFlagged(false)
-      boardStore.initFlags()
     }
   }, [isCellLoading])
 
@@ -84,4 +88,4 @@ function BoardCell(props: Props): React.ReactElement<Props> {
     </div>
   )
 }
-export default BoardCell
+export default React.memo(BoardCell)

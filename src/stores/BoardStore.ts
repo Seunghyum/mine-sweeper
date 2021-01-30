@@ -6,13 +6,19 @@ export interface BoardStoreType {
   rows?: number
   cols?: number
   mines?: number
+  opens?: number
   flags?: number
+  faultFlags?: number
   isGameFailed?: boolean
+  isGameSuccessed: boolean
   isCellLoading?: boolean
   isLoading?: boolean
   rootStore?: RootStoreType
+  initSettings?: () => void
   increaseFlags?: () => void
   decreaseFlags?: () => void
+  increaseFaultFlags?: () => void
+  decreaseFaultFlags?: () => void
   initFlags?: () => void
   setSettings?: (rows: number, cols: number) => { rows: number; cols: number; mines: number }
   setIsGameFailed?: (boolean: boolean) => void
@@ -20,9 +26,10 @@ export interface BoardStoreType {
 }
 
 export default class BoardStore {
-  @observable rows: number
-  @observable cols: number
+  @observable rows = 8
+  @observable cols = 8
   @observable flags: number
+  @observable faultFlags = 0
   @observable isGameFailed = false
   @observable isLoading = false
   @observable isCellLoading = false
@@ -36,6 +43,12 @@ export default class BoardStore {
     return Math.floor((this.rows * this.cols) / 4)
   }
 
+  @computed get isGameSuccessed(): boolean {
+    if (this.flags === this.mines && this.faultFlags === 0) return true
+
+    return false
+  }
+
   @action
   increaseFlags = (): void => {
     this.flags += 1
@@ -44,6 +57,16 @@ export default class BoardStore {
   @action
   decreaseFlags = (): void => {
     this.flags -= 1
+  }
+
+  @action
+  increaseFaultFlags = (): void => {
+    this.faultFlags += 1
+  }
+
+  @action
+  decreaseFaultFlags = (): void => {
+    this.faultFlags -= 1
   }
 
   @action
@@ -65,9 +88,8 @@ export default class BoardStore {
 
   @action
   initSettings = (): void => {
-    this.rows = 8
-    this.cols = 8
     this.flags = 0
+    this.faultFlags = 0
   }
 
   @action

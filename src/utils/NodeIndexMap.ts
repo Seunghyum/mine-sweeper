@@ -1,6 +1,6 @@
 import { NodeType } from './Node'
 
-interface setIndexesProps {
+interface NodeMapType {
   index: [number, number]
   node: NodeType
 }
@@ -11,10 +11,10 @@ interface initMineSetProps {
 }
 
 export interface NodeIndexMapType {
-  indexes: any[]
+  indexes: [NodeType][] | [] | null
   mineSet: Set<string> | undefined
-  setIndexes: (props: setIndexesProps) => void
-  initMineSet: (props: { rows: number; cols: number; mines: number }) => Set<any> | void
+  setIndexes: (props: NodeMapType) => void
+  initMineSet: (props: { rows: number; cols: number; mines: number }) => Set<string> | void
   initIndexes: () => void
   getNodeByIndex: (index: [number, number]) => any[]
   updateMinesInIndexMap: () => void
@@ -26,7 +26,7 @@ class NodeIndexMapClass implements NodeIndexMapType {
   indexes: any[] = []
   mineSet: Set<string> | undefined
 
-  initMineSet = ({ rows, cols, mines }: initMineSetProps): Set<any> | void => {
+  initMineSet = ({ rows, cols, mines }: initMineSetProps): Set<string> | void => {
     if (rows * cols < mines) return alert('Number of mines exceed total cells')
 
     this.mineSet = new Set()
@@ -52,7 +52,7 @@ class NodeIndexMapClass implements NodeIndexMapType {
     return this.mineSet
   }
 
-  setIndexes({ index, node }: setIndexesProps): void {
+  setIndexes({ index, node }: NodeMapType): void {
     const x = index[0]
     const y = index[1]
     if (!this.indexes[x]) this.indexes.push([])
@@ -103,14 +103,18 @@ class NodeIndexMapClass implements NodeIndexMapType {
   }
 
   openAdjacentNode(node: NodeType): void {
-    if (!node) return
-    if (node.isOpened === true) return
+    if (!node || node.hasMine) return
+    if (node.isOpened) return
     node.setIsOpened(true)
     if (node.adjacent === 0) {
       this.openAdjacentNode(node.top)
       this.openAdjacentNode(node.bottom)
       this.openAdjacentNode(node.right)
       this.openAdjacentNode(node.left)
+      this.openAdjacentNode(node.left?.bottom)
+      this.openAdjacentNode(node.left?.top)
+      this.openAdjacentNode(node.right?.bottom)
+      this.openAdjacentNode(node.right?.top)
     }
   }
 

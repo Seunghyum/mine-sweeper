@@ -1,28 +1,42 @@
-import { useObserver } from 'mobx-react-lite'
 import * as React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useStores } from '~helpers/useStores'
 import { BoardStoreType } from '~stores/BoardStore'
 
 function BoardToolbar(props: BoardStoreType): React.ReactElement {
-  const { rows, flags, mines, setSettings, isGameFailed, setIsGameFailed } = props
+  const {
+    rows,
+    flags,
+    mines,
+    setSettings,
+    isGameFailed,
+    isGameSuccessed,
+    setIsGameFailed,
+    initSettings,
+  } = props
   const { initCellIdTable } = useStores().nodeStore
   const { setIsCellLoading } = useStores().boardStore
   const [defaultNumber, setDefaultNumber] = useState(rows)
 
-  const onClickSetTable = async () => {
+  const onClickSetTable = () => {
     const options = setSettings(defaultNumber, defaultNumber)
     setIsGameFailed(false)
     setIsCellLoading(true)
-    try {
-      await initCellIdTable(options)
+    initSettings()
+
+    initCellIdTable(options).then(() =>
       setTimeout(() => {
         setIsCellLoading(false)
-      }, 1000)
-    } catch (err) {
-      console.error('err : ', err)
-    }
+      }, 500),
+    )
+  }
+
+  const renderFaceIcon = () => {
+    if (isGameFailed) return 'https://img.icons8.com/emoji/48/000000/loudly-crying-face.png'
+    if (isGameSuccessed) return 'https://img.icons8.com/emoji/48/000000/partying-face.png'
+
+    return 'https://img.icons8.com/emoji/48/000000/slightly-smiling-face.png'
   }
 
   return (
@@ -37,15 +51,7 @@ function BoardToolbar(props: BoardStoreType): React.ReactElement {
           onChange={e => setDefaultNumber(Number(e.target.value))}
         />
         <button className="btn-start" onClick={onClickSetTable}>
-          {
-            <img
-              src={
-                isGameFailed
-                  ? 'https://img.icons8.com/emoji/48/000000/loudly-crying-face.png'
-                  : 'https://img.icons8.com/emoji/48/000000/slightly-smiling-face.png'
-              }
-            />
-          }
+          {<img src={renderFaceIcon()} />}
         </button>
       </div>
       <table className="tool-wrapper__dashboard">
@@ -67,4 +73,5 @@ function BoardToolbar(props: BoardStoreType): React.ReactElement {
     </div>
   )
 }
+
 export default BoardToolbar

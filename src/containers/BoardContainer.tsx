@@ -6,6 +6,7 @@ import BoardCell from '~components/board/BoardCell'
 import Toolbar from '~components/board/BoardToolbar'
 import useForceUpdate from '~helpers/useForceUpdate'
 import { useStores } from '~helpers/useStores'
+import ConfettiBackground from '~src/components/ConfettiBackground'
 import { NodeType } from '~utils/Node'
 
 const Board = (): ReactElement<void, string> => {
@@ -39,13 +40,18 @@ const Board = (): ReactElement<void, string> => {
       <Toolbar
         setSettings={boardStore.setSettings}
         isGameFailed={boardStore.isGameFailed}
+        isGameSuccessed={boardStore.isGameSuccessed}
         setIsGameFailed={boardStore.setIsGameFailed}
+        initSettings={boardStore.initSettings}
+        opens={boardStore.opens}
         rows={boardStore.rows}
         cols={boardStore.cols}
         flags={boardStore.flags}
         mines={boardStore.mines}
       />
-      <div className="board-wrapper">{renderBoard()}</div>
+      <div className="board-wrapper confetti-wrapper">{renderBoard()}</div>
+
+      <ConfettiBackground toggle={boardStore.isGameSuccessed} />
     </>
   ))
 }
